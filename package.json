@@ -1,0 +1,95 @@
+{
+  "name": "claudraw",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Excalidraw canvas with Claude Code in a side panel, node notes and undo. Point it at any project.",
+  "license": "MIT",
+  "author": "andreivasilache",
+  "homepage": "https://andreiv.cc",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andreivasilache/claudraw.git"
+  },
+  "bugs": {
+    "url": "https://github.com/andreivasilache/claudraw/issues"
+  },
+  "keywords": [
+    "excalidraw",
+    "diagrams",
+    "diagramming",
+    "whiteboard",
+    "canvas",
+    "claude",
+    "claude-code",
+    "mcp",
+    "model-context-protocol",
+    "ai-agent",
+    "opencode",
+    "llm",
+    "architecture-diagrams",
+    "flowchart",
+    "cli"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "bin": {
+    "canvas": "bin/canvas.js",
+    "claudraw": "bin/canvas.js"
+  },
+  "files": [
+    "bin",
+    "server",
+    "src",
+    "dist",
+    "public",
+    "examples",
+    "scripts",
+    "templates",
+    "dashboard",
+    "hooks",
+    "index.html",
+    "vite.config.ts",
+    "tsconfig.json",
+    "CHANGELOG.md",
+    "LICENSE",
+    "THIRD_PARTY_NOTICES.md",
+    "SECURITY.md"
+  ],
+  "scripts": {
+    "dev": "tsx watch server/index.ts",
+    "web": "vite",
+    "build:ui": "vite build",
+    "start": "tsx server/index.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "node --import tsx --test test/*.test.ts",
+    "fonts": "node scripts/copy-fonts.mjs",
+    "version": "npm run build:ui && git add -A dist",
+    "notices": "node scripts/notices.mjs",
+    "prepublishOnly": "npm run build:ui"
+  },
+  "dependencies": {
+    "@dagrejs/dagre": "^3.1.3",
+    "@excalidraw/excalidraw": "^0.18.1",
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "@vitejs/plugin-react": "^6.2.1",
+    "@xterm/addon-fit": "^0.11.0",
+    "@xterm/addon-web-links": "^0.12.0",
+    "@xterm/xterm": "^6.0.0",
+    "elkjs": "^0.9.3",
+    "node-pty": "^1.1.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tsx": "^4.23.15",
+    "vite": "^8.3.6",
+    "ws": "^8.22.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "@types/react": "^18.3.31",
+    "@types/react-dom": "^18.3.7",
+    "@types/ws": "^8.18.2",
+    "typescript": "^7.0.2"
+  }
+}
