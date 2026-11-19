@@ -1,5 +1,6 @@
 <div align="center">
 
+<img src="docs/images/logo.svg" alt="claudraw logo" width="128" height="128">
 
 # claudraw
 
