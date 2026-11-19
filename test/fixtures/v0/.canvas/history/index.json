@@ -1,0 +1,14 @@
+[
+  {
+    "id": "h1",
+    "date": "2026-11-09T09:47:54.135Z",
+    "label": "add_node"
+  },
+  {
+    "id": "h2",
+    "date": "2026-11-09T09:48:54.135Z",
+    "label": "update_node",
+    "source": "claude",
+    "hash": "abc"
+  }
+]

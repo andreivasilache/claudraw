@@ -1,0 +1,23 @@
+{
+  "g1": {
+    "id": "g1",
+    "tool": "add_columns",
+    "args": {
+      "columns": [
+        {
+          "title": "Stage 1",
+          "items": [
+            {
+              "text": "Item"
+            }
+          ]
+        }
+      ]
+    },
+    "ids": [
+      "n_a",
+      "n_b"
+    ],
+    "date": "2026-11-17T10:00:00.000Z"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "n_a": [
+    {
+      "id": "m1",
+      "date": "2026-11-09T10:00:00.000Z",
+      "text": "Needs PCI compliance",
+      "kind": "fact"
+    }
+  ],
+  "n_b": [
+    {
+      "id": "m2",
+      "date": "2026-11-09T10:01:00.000Z",
+      "text": "Kafka or RabbitMQ?",
+      "kind": "question",
+      "status": "open"
+    }
+  ]
+}

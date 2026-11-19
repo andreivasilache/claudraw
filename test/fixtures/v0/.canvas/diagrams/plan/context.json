@@ -1,0 +1,12 @@
+{
+  "style": {
+    "legend": [],
+    "spacing": "normal",
+    "textSize": "medium",
+    "corners": "rounded",
+    "look": "sketchy",
+    "font": "match",
+    "maxWords": 6
+  },
+  "diagrams": ""
+}

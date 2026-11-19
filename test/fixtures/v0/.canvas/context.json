@@ -1,0 +1,18 @@
+{
+  "style": {
+    "legend": [
+      {
+        "color": "blue",
+        "meaning": "user input"
+      }
+    ],
+    "spacing": "normal",
+    "textSize": "medium",
+    "corners": "rounded",
+    "look": "sketchy",
+    "font": "match",
+    "maxWords": 6
+  },
+  "diagrams": "Architecture of the sample app.",
+  "content": "Older field kept as it was."
+}

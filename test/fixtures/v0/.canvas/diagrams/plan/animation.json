@@ -1,0 +1,15 @@
+{
+  "animations": [
+    {
+      "name": "Tour",
+      "steps": [
+        {
+          "ids": [
+            "n_a"
+          ],
+          "caption": "Start here"
+        }
+      ]
+    }
+  ]
+}
