@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Canvas settings</title>
+<style>
+  :root { --bg:#f6f6f4; --card:#fff; --fg:#1c1c1a; --muted:#6b6b66; --line:#e2e2dd; --accent:#4263eb; --ok:#2f9e44; --bad:#e03131; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#16161a; --card:#1f1f25; --fg:#ececf0; --muted:#9a9aa5; --line:#2e2e36; --accent:#748ffc; --ok:#51cf66; --bad:#ff6b6b; } }
+  * { box-sizing: border-box }
+  body { margin:0; background:var(--bg); color:var(--fg); font:14px/1.45 system-ui,sans-serif }
+  main { max-width:760px; margin:0 auto; padding:32px 16px }
+  h1 { font-size:22px; margin:0 0 4px }
+  h2 { font-size:16px; margin:28px 0 4px }
+  .sub { color:var(--muted); margin:0 0 16px }
+  .back { color:var(--muted); text-decoration:none; font-size:13px }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:16px; margin-bottom:12px; display:grid; grid-template-columns:120px 1fr; gap:8px 12px; align-items:center }
+  .card .head { grid-column:1/-1; display:flex; align-items:center; gap:8px }
+  .card .head strong { flex:1 }
+  label { color:var(--muted); font-size:13px }
+  input, select, textarea { font:inherit; padding:7px 10px; border:1px solid var(--line); border-radius:6px; background:var(--card); color:var(--fg); width:100% }
+  textarea { font:12px ui-monospace,monospace; min-height:56px; resize:vertical }
+  .hint { grid-column:2; color:var(--muted); font-size:12px; margin-top:-4px }
+  .only-open[hidden] { display:none }
+  button, a.btn { font:inherit; padding:6px 12px; border-radius:6px; border:1px solid var(--line); background:var(--card); color:var(--fg); cursor:pointer; text-decoration:none }
+  button.primary { background:var(--accent); border-color:var(--accent); color:#fff }
+  button.link { border:0; background:none; color:var(--muted); padding:6px 4px }
+  .row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:16px }
+  .msg { min-height:1em; margin-left:8px }
+  .msg.bad { color:var(--bad) } .msg.ok { color:var(--ok) }
+  .file { color:var(--muted); font:12px ui-monospace,monospace; word-break:break-all }
+  @media (max-width:560px) { .card { grid-template-columns:1fr } .hint { grid-column:1 } }
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="/">← Projects</a>
+  <h1>Settings</h1>
+  <p class="sub">The LLMs the canvas side panel can run. Pick one per project from the dropdown above the terminal.</p>
+
+  <h2>LLMs</h2>
+  <p class="sub">
+    <b>Claude Code</b> runs <code>claude</code>.
+    <b>OpenCode</b> runs <code>opencode</code> with the providers from <code>~/.config/opencode/opencode.json</code> (e.g. the company vLLM servers); the model is <code>provider/model</code>.
+  </p>
+  <div id="list"></div>
+  <div class="row">
+    <button id="add-claude">+ Claude Code</button>
+    <button id="add-opencode">+ OpenCode</button>
+  </div>
+
+  <h2>Default</h2>
+  <p class="sub">Used by projects that have not picked one yet.</p>
+  <select id="default" style="max-width:320px"></select>
+
+  <div class="row">
+    <button class="primary" id="save">Save</button>
+    <span id="msg" class="msg"></span>
+  </div>
+  <p class="file" id="file"></p>
+</main>
+<script>
+const $ = (id) => document.getElementById(id)
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]))
+let llms = []
+let defaultId = ''
+
+const BLANK = {
+  claude: { name: 'Claude Code', kind: 'claude', command: 'claude' },
+  opencode: { name: 'OpenCode', kind: 'opencode', command: 'opencode' },
+}
+const KIND_NAMES = { claude: 'Claude Code', opencode: 'OpenCode (providers from its own config)' }
+const HINTS = {
+  claude: 'Empty fields keep your normal Claude Code login.',
+  opencode: 'Providers and keys come from opencode.json. Model as provider/model, e.g. local-vllm/qwen3.6-35b-a3b-fp8; empty uses its default. The canvas MCP server is passed in automatically.',
+}
+const MODEL_HINTS = { claude: 'optional, e.g. claude-opus-5-5', opencode: 'e.g. local-vllm/qwen3.6-35b-a3b-fp8' }
+
+function card(l, i) {
+  const oc = l.kind === 'opencode'
+  return `<div class="card" data-i="${i}">
+    <div class="head"><strong>${esc(l.name) || 'New LLM'}</strong><button class="link" data-act="remove">Remove</button></div>
+    <label>Name</label><input data-k="name" value="${esc(l.name)}" placeholder="e.g. OpenCode (company vLLM)">
+    <label>Type</label><select data-k="kind">
+      ${Object.entries(KIND_NAMES).map(([k, n]) => `<option value="${k}" ${l.kind === k ? 'selected' : ''}>${n}</option>`).join('')}
+    </select>
+    <label>Command</label><input data-k="command" value="${esc(l.command)}" placeholder="${BLANK[l.kind].command}">
+    ${oc ? '' : `<label>Base URL</label><input data-k="baseUrl" value="${esc(l.baseUrl)}" placeholder="optional (ANTHROPIC_BASE_URL)">
+    <label>API key</label><input data-k="apiKey" type="password" autocomplete="off" value="" placeholder="${l.hasApiKey ? '•••••• saved (leave empty to keep)' : 'optional (ANTHROPIC_API_KEY)'}">
+    ${l.hasApiKey ? '<span></span><label><input type="checkbox" data-k="clearApiKey" style="width:auto"> remove the saved key</label>' : ''}`}
+    <label>Model</label><input data-k="model" value="${esc(l.model)}" placeholder="${MODEL_HINTS[l.kind]}">
+    <label>Extra env</label><textarea data-k="env" placeholder="KEY=VALUE, one per line">${esc(l.env)}</textarea>
+    <div class="hint">${HINTS[l.kind]}</div>
+  </div>`
+}
+
+function render() {
+  $('list').innerHTML = llms.map(card).join('') || '<p class="sub">No LLMs. Add one below.</p>'
+  $('default').innerHTML = llms.map((l) => `<option value="${esc(l.id)}" ${l.id === defaultId ? 'selected' : ''}>${esc(l.name)}</option>`).join('')
+}
+
+/** Read the inputs back into `llms` (before re-rendering or saving). */
+function collect() {
+  for (const c of document.querySelectorAll('.card')) {
+    const l = llms[+c.dataset.i]
+    for (const el of c.querySelectorAll('[data-k]')) l[el.dataset.k] = el.type === 'checkbox' ? el.checked : el.value
+  }
+  defaultId = $('default').value
+}
+
+const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40) || 'llm'
+function add(kind) {
+  collect()
+  const l = { ...BLANK[kind], baseUrl: '', apiKey: '', model: '', env: '' }
+  let id = slug(l.name)
+  for (let n = 2; llms.some((x) => x.id === id); n++) id = `${slug(l.name)}-${n}`
+  llms.push({ ...l, id })
+  render()
+}
+
+$('add-claude').onclick = () => add('claude')
+$('add-opencode').onclick = () => add('opencode')
+$('list').addEventListener('click', (e) => {
+  if (!e.target.closest('[data-act="remove"]')) return
+  collect()
+  llms.splice(+e.target.closest('.card').dataset.i, 1)
+  render()
+})
+$('list').addEventListener('change', (e) => {
+  if (e.target.dataset.k !== 'kind' && e.target.dataset.k !== 'name') return
+  collect()
+  const l = llms[+e.target.closest('.card').dataset.i]
+  if (e.target.dataset.k === 'kind' && (!l.command || Object.values(BLANK).some((b) => b.command === l.command))) l.command = BLANK[l.kind].command
+  render()
+})
+
+function show(text, ok) {
+  $('msg').textContent = text
+  $('msg').className = `msg ${ok ? 'ok' : 'bad'}`
+}
+
+$('save').onclick = async () => {
+  collect()
+  try {
+    const r = await fetch('/api/settings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ llms, default: defaultId }) })
+    const j = await r.json()
+    if (!r.ok) throw new Error(j.error || r.statusText)
+    load(j)
+    show('Saved. A running terminal uses the new settings after a restart or a switch.', true)
+  } catch (err) {
+    show(err.message, false)
+  }
+}
+
+function load(s) {
+  llms = s.llms
+  defaultId = s.default
+  $('file').textContent = `Stored in ${s.file}`
+  render()
+}
+fetch('/api/settings').then((r) => r.json()).then(load).catch((e) => show(e.message, false))
+</script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Canvas projects</title>
+<style>
+  :root { --bg:#f6f6f4; --card:#fff; --fg:#1c1c1a; --muted:#6b6b66; --line:#e2e2dd; --accent:#4263eb; --ok:#2f9e44; --bad:#e03131; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#16161a; --card:#1f1f25; --fg:#ececf0; --muted:#9a9aa5; --line:#2e2e36; --accent:#748ffc; --ok:#51cf66; --bad:#ff6b6b; } }
+  * { box-sizing: border-box }
+  body { margin:0; background:var(--bg); color:var(--fg); font:14px/1.45 system-ui,sans-serif }
+  main { max-width:960px; margin:0 auto; padding:32px 16px }
+  h1 { font-size:22px; margin:0 0 4px }
+  .sub { color:var(--muted); margin:0 0 24px }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:12px }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:16px; display:flex; flex-direction:column; gap:10px }
+  .card h2 { font-size:16px; margin:0; display:flex; align-items:center; gap:8px }
+  .dot { width:9px; height:9px; border-radius:50%; background:var(--line); flex:none }
+  .running .dot { background:var(--ok) }
+  .path { color:var(--muted); font:12px ui-monospace,monospace; word-break:break-all }
+  .err { color:var(--bad); font:12px ui-monospace,monospace; white-space:pre-wrap }
+  .row { display:flex; gap:8px; flex-wrap:wrap; margin-top:auto }
+  button, a.btn { font:inherit; padding:6px 12px; border-radius:6px; border:1px solid var(--line); background:var(--card); color:var(--fg); cursor:pointer; text-decoration:none }
+  button.primary, a.btn.primary { background:var(--accent); border-color:var(--accent); color:#fff }
+  button:disabled { opacity:.5; cursor:default }
+  button.link { border:0; background:none; color:var(--muted); padding:6px 4px }
+  details { color:var(--muted); font-size:12px }
+  details code { display:block; margin-top:4px; word-break:break-all; user-select:all }
+  form { display:flex; gap:8px; margin:24px 0 0; flex-wrap:wrap }
+  input { font:inherit; padding:7px 10px; border:1px solid var(--line); border-radius:6px; background:var(--card); color:var(--fg); flex:1 1 280px }
+  .msg { color:var(--bad); margin-top:8px; min-height:1em }
+  .empty { color:var(--muted); padding:24px 0 }
+  .ver { color:var(--muted); margin-top:32px; font-size:12px }
+  .ver b { color:var(--accent) }
+  ul.diagrams { margin:0; padding:0 0 0 18px; display:flex; flex-direction:column; gap:2px }
+  ul.diagrams a { color:var(--fg) }
+</style>
+</head>
+<body>
+<main>
+  <a class="btn" href="/settings" style="float:right">Settings</a>
+  <h1>Canvas projects</h1>
+  <p class="sub">Pick a project to open its architecture canvas.</p>
+  <div id="grid" class="grid"></div>
+  <form id="add">
+    <input id="path" placeholder="Project folder, e.g. ~/Documents/projects/my-app" autocomplete="off" required>
+    <input id="name" placeholder="Name (optional)" style="flex:0 1 180px" autocomplete="off">
+    <button class="primary">Add project</button>
+  </form>
+  <div id="msg" class="msg"></div>
+  <div id="ver" class="ver"></div>
+</main>
+<script>
+const $ = (id) => document.getElementById(id)
+const post = async (url, body) => {
+  const r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+  const j = await r.json().catch(() => ({}))
+  if (!r.ok) throw new Error(j.error || r.statusText)
+  return j
+}
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]))
+
+function card(p) {
+  const url = `/p/${encodeURIComponent(p.id)}/`
+  const mcp = `${location.origin}/p/${p.id}/mcp`
+  return `<div class="card ${p.exists ? 'running' : ''}" data-id="${esc(p.id)}">
+    <h2><span class="dot"></span>${esc(p.name)}</h2>
+    <div class="path">${esc(p.path)}</div>
+    ${p.exists ? '' : '<div class="err">Folder missing</div>'}
+    ${p.locked ? `<div class="err">${esc(p.locked)}</div>` : ''}
+    ${p.exists && !p.hasCanvas ? '<div class="path">No .canvas yet (created on open)</div>' : ''}
+    ${(p.diagrams || []).length > 1 ? `<ul class="diagrams">${p.diagrams.map((d) => `<li><a href="${d.id === 'main' ? url : `${url}d/${encodeURIComponent(d.id)}`}">${esc(d.name)}</a></li>`).join('')}</ul>` : ''}
+    <div class="row">
+      ${p.exists && !p.locked ? `<a class="btn primary" href="${url}">Open</a>` : ''}
+      <button class="link" data-act="remove">Remove</button>
+    </div>
+    <details><summary>MCP URL</summary><code>${esc(mcp)}</code></details>
+  </div>`
+}
+
+async function refresh() {
+  try {
+    const list = await (await fetch('/api/projects')).json()
+    $('grid').innerHTML = list.length ? list.map(card).join('') : '<div class="empty">No projects yet. Add a folder below.</div>'
+  } catch { /* server gone; keep last view */ }
+}
+
+$('grid').addEventListener('click', async (e) => {
+  const b = e.target.closest('button[data-act="remove"]')
+  if (!b) return
+  if (!confirm('Remove from the list? The project folder is not touched.')) return
+  $('msg').textContent = ''
+  try { await post('/api/projects/remove', { id: b.closest('.card').dataset.id }) } catch (err) { $('msg').textContent = err.message }
+  refresh()
+})
+
+$('add').addEventListener('submit', async (e) => {
+  e.preventDefault()
+  $('msg').textContent = ''
+  try {
+    await post('/api/projects/add', { path: $('path').value, name: $('name').value })
+    $('path').value = $('name').value = ''
+  } catch (err) { $('msg').textContent = err.message }
+  refresh()
+})
+
+async function version() {
+  try {
+    const v = await (await fetch('/api/version')).json()
+    $('ver').innerHTML = `claudraw v${esc(v.version)}${v.latest ? ` · <b>v${esc(v.latest)} is available</b> (npm i -g git+https://github.com/andreivasilache/claudraw.git#v${esc(v.latest)})` : ''}`
+  } catch { /* server gone */ }
+}
+
+refresh()
+version()
+setTimeout(version, 6000) // the first check runs in the background; ask again once it is done
+setInterval(refresh, 3000)
+setInterval(version, 60000)
+</script>
+</body>
+</html>
