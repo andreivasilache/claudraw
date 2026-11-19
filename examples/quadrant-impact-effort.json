@@ -1,0 +1,52 @@
+{
+  "id": "quadrant-impact-effort",
+  "title": "Impact x effort matrix",
+  "tags": [
+    "impact",
+    "effort",
+    "priorities",
+    "urgent",
+    "important",
+    "matrix",
+    "2x2"
+  ],
+  "type": "quadrant",
+  "tool": "add_quadrant",
+  "text": "Dark mode is low effort and high impact; SSO is high effort and high impact; a new logo is low on both.",
+  "why": "Effort across, impact up, each item in its quadrant, quadrants named for what to do with them.",
+  "args": {
+    "xAxis": {
+      "title": "Effort",
+      "low": "Low",
+      "high": "High"
+    },
+    "yAxis": {
+      "title": "Impact",
+      "low": "Low",
+      "high": "High"
+    },
+    "titles": [
+      "Quick wins",
+      "Big bets",
+      "Fill-ins",
+      "Avoid"
+    ],
+    "items": [
+      {
+        "text": "Dark mode",
+        "x": "low",
+        "y": "high"
+      },
+      {
+        "text": "SSO",
+        "x": "high",
+        "y": "high"
+      },
+      {
+        "text": "New logo",
+        "x": "low",
+        "y": "low"
+      }
+    ]
+  }
+}

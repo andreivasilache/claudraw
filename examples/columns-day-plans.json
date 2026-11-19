@@ -1,0 +1,57 @@
+{
+  "id": "columns-day-plans",
+  "title": "Days with Plan A / Plan B, no times",
+  "tags": [
+    "days",
+    "plan a",
+    "plan b",
+    "alternatives",
+    "trip",
+    "options",
+    "zile"
+  ],
+  "type": "columns",
+  "tool": "add_columns",
+  "text": "Saturday: Plan A Rigi and Lucerne, Plan B only Lucerne. Sunday: Uetliberg, then Zurich.",
+  "why": "Without clock times, days are columns and the alternatives are sections inside a day, never 'Plan A:' prefixes.",
+  "args": {
+    "columns": [
+      {
+        "title": "Sat 14/11",
+        "sections": [
+          {
+            "title": "Plan A",
+            "items": [
+              {
+                "text": "Rigi Kulm"
+              },
+              {
+                "text": "Lucerne old town"
+              }
+            ]
+          },
+          {
+            "title": "Plan B",
+            "items": [
+              {
+                "text": "Lucerne only"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Sun 15/11",
+        "items": [
+          {
+            "text": "Uetliberg"
+          },
+          {
+            "text": "Zurich old town"
+          }
+        ]
+      }
+    ],
+    "connect": true
+  }
+}

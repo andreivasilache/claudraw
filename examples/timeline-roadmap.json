@@ -1,0 +1,52 @@
+{
+  "id": "timeline-roadmap",
+  "title": "Quarterly product roadmap",
+  "tags": [
+    "roadmap",
+    "quarter",
+    "q1",
+    "q2",
+    "release",
+    "milestone",
+    "teams"
+  ],
+  "type": "timeline",
+  "tool": "add_timeline",
+  "text": "Q1 research, Q2 beta with 3 customers, Q3 general availability; the platform team works on SSO in Q2-Q3.",
+  "why": "Quarters are numbers on the axis, one row per team, so parallel work and gaps are visible.",
+  "args": {
+    "rows": [
+      {
+        "title": "Product",
+        "items": [
+          {
+            "start": 1,
+            "end": 2,
+            "text": "Research"
+          },
+          {
+            "start": 2,
+            "end": 3,
+            "text": "Beta"
+          },
+          {
+            "start": 3,
+            "end": 4,
+            "text": "GA"
+          }
+        ]
+      },
+      {
+        "title": "Platform",
+        "items": [
+          {
+            "start": 2,
+            "end": 4,
+            "text": "SSO"
+          }
+        ]
+      }
+    ],
+    "showTimes": false
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "id": "mindmap-launch",
+  "title": "Brainstorm around one idea",
+  "tags": [
+    "brainstorm",
+    "ideas",
+    "topics",
+    "mind map",
+    "idei",
+    "launch",
+    "themes"
+  ],
+  "type": "mindmap",
+  "tool": "add_mindmap",
+  "text": "Brainstorm for the launch: marketing (blog, ads), pricing, partners.",
+  "why": "The idea in the middle, branches right and left, their ideas further out.",
+  "args": {
+    "center": "Product launch",
+    "branches": [
+      {
+        "text": "Marketing",
+        "children": [
+          {
+            "text": "Blog posts"
+          },
+          {
+            "text": "Ads"
+          }
+        ]
+      },
+      {
+        "text": "Pricing"
+      },
+      {
+        "text": "Partners"
+      }
+    ]
+  }
+}

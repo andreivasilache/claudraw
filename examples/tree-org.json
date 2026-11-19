@@ -1,0 +1,45 @@
+{
+  "id": "tree-org",
+  "title": "Org chart",
+  "tags": [
+    "org",
+    "organigramă",
+    "reports to",
+    "team",
+    "department",
+    "hierarchy",
+    "manager"
+  ],
+  "type": "tree",
+  "tool": "add_tree",
+  "text": "The CEO has a CTO and a CFO; the CTO leads the platform and mobile teams.",
+  "why": "Each node under its parent, top-down, siblings in the order given.",
+  "args": {
+    "nodes": [
+      {
+        "key": "ceo",
+        "text": "CEO"
+      },
+      {
+        "key": "cto",
+        "text": "CTO",
+        "parent": "ceo"
+      },
+      {
+        "key": "cfo",
+        "text": "CFO",
+        "parent": "ceo"
+      },
+      {
+        "key": "pl",
+        "text": "Platform team",
+        "parent": "cto"
+      },
+      {
+        "key": "mo",
+        "text": "Mobile team",
+        "parent": "cto"
+      }
+    ]
+  }
+}

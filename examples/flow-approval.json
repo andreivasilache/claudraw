@@ -1,0 +1,20 @@
+{
+  "id": "flow-approval",
+  "title": "Approval process with a decision",
+  "tags": [
+    "process",
+    "approval",
+    "if",
+    "else",
+    "steps",
+    "workflow",
+    "request"
+  ],
+  "type": "flow",
+  "tool": "draw_mermaid",
+  "text": "An employee submits a request; if the amount is over 1000 the manager approves it, otherwise it is approved automatically; then finance pays.",
+  "why": "Steps left to right, the condition as a diamond with labelled yes / no arrows, start and end as ellipses.",
+  "args": {
+    "code": "flowchart LR\n  S([Request]) --> A{Over 1000?}\n  A -->|yes| B[Manager approves]\n  A -->|no| C[Auto-approved]\n  B --> D[Finance pays]\n  C --> D\n  D --> E([Done])"
+  }
+}

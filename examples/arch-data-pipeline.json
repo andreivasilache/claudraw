@@ -1,0 +1,78 @@
+{
+  "id": "arch-data-pipeline",
+  "title": "Data pipeline",
+  "tags": [
+    "pipeline",
+    "etl",
+    "ingestion",
+    "warehouse",
+    "s3",
+    "spark",
+    "dashboard",
+    "data"
+  ],
+  "type": "architecture",
+  "tool": "add_graph",
+  "text": "Apps send events to an ingestion API, which writes to Kafka; a Spark job writes Parquet to S3; the warehouse loads S3 and BI queries it.",
+  "why": "A left-to-right chain of stages, one box per component, labelled arrows where the format changes.",
+  "args": {
+    "nodes": [
+      {
+        "key": "app",
+        "text": "Mobile apps"
+      },
+      {
+        "key": "api",
+        "text": "Ingestion API"
+      },
+      {
+        "key": "kf",
+        "text": "Kafka"
+      },
+      {
+        "key": "sp",
+        "text": "Spark job"
+      },
+      {
+        "key": "s3",
+        "text": "S3 (Parquet)"
+      },
+      {
+        "key": "wh",
+        "text": "Warehouse"
+      },
+      {
+        "key": "bi",
+        "text": "BI dashboard"
+      }
+    ],
+    "edges": [
+      {
+        "from": "app",
+        "to": "api",
+        "label": "events"
+      },
+      {
+        "from": "api",
+        "to": "kf"
+      },
+      {
+        "from": "kf",
+        "to": "sp"
+      },
+      {
+        "from": "sp",
+        "to": "s3"
+      },
+      {
+        "from": "s3",
+        "to": "wh",
+        "label": "nightly"
+      },
+      {
+        "from": "wh",
+        "to": "bi"
+      }
+    ]
+  }
+}

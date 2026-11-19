@@ -1,0 +1,20 @@
+{
+  "id": "flow-ro-comanda",
+  "title": "Proces de comandă (română)",
+  "tags": [
+    "comanda",
+    "plata",
+    "dacă",
+    "altfel",
+    "proces",
+    "pasi",
+    "client"
+  ],
+  "type": "flow",
+  "tool": "draw_mermaid",
+  "text": "Clientul plasează comanda, apoi plătește. Dacă plata eșuează primește un email, altfel comanda merge la depozit.",
+  "why": "Pașii de la stânga la dreapta, decizia ca romb, ramurile etichetate.",
+  "args": {
+    "code": "flowchart LR\n  A([Comandă]) --> B[Plată]\n  B --> C{Plata reușită?}\n  C -->|nu| D[Email client]\n  C -->|da| E[Depozit]\n  E --> F[Curier]\n  F --> G([Livrat])"
+  }
+}

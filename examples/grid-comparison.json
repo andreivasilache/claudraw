@@ -1,0 +1,47 @@
+{
+  "id": "grid-comparison",
+  "title": "Options compared by criteria",
+  "tags": [
+    "compare",
+    "vs",
+    "versus",
+    "criteria",
+    "pros",
+    "cons",
+    "choice",
+    "price"
+  ],
+  "type": "grid",
+  "tool": "add_grid",
+  "text": "Compare vendor A, B and C on price, support and setup time.",
+  "why": "Options as columns, criteria as rows, short values in the cells.",
+  "args": {
+    "columns": [
+      "Vendor A",
+      "Vendor B",
+      "Vendor C"
+    ],
+    "rows": [
+      "Price",
+      "Support",
+      "Setup"
+    ],
+    "cells": [
+      [
+        "€10",
+        "€15",
+        "€8"
+      ],
+      [
+        "Email",
+        "24/7",
+        "Forum"
+      ],
+      [
+        "1 day",
+        "1 week",
+        "2 days"
+      ]
+    ]
+  }
+}

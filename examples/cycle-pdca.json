@@ -1,0 +1,34 @@
+{
+  "id": "cycle-pdca",
+  "title": "Improvement cycle",
+  "tags": [
+    "cycle",
+    "loop",
+    "repeat",
+    "pdca",
+    "feedback",
+    "ciclu",
+    "sprint"
+  ],
+  "type": "cycle",
+  "tool": "add_cycle",
+  "text": "Plan, do, check, act, and back to plan.",
+  "why": "Steps on a circle clockwise from the top, the last arrow back to the first, the loop's name in the middle.",
+  "args": {
+    "title": "PDCA",
+    "steps": [
+      {
+        "text": "Plan"
+      },
+      {
+        "text": "Do"
+      },
+      {
+        "text": "Check"
+      },
+      {
+        "text": "Act"
+      }
+    ]
+  }
+}

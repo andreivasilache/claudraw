@@ -1,0 +1,45 @@
+{
+  "id": "grid-ro-oferte",
+  "title": "Comparație oferte (română)",
+  "tags": [
+    "compară",
+    "oferte",
+    "criterii",
+    "preț",
+    "avantaje",
+    "dezavantaje"
+  ],
+  "type": "grid",
+  "tool": "add_grid",
+  "text": "Trei apartamente comparate după preț, suprafață și distanța față de birou.",
+  "why": "Ofertele pe coloane, criteriile pe rânduri, valorile scurte în celule.",
+  "args": {
+    "columns": [
+      "Ap. 1",
+      "Ap. 2",
+      "Ap. 3"
+    ],
+    "rows": [
+      "Preț",
+      "Suprafață",
+      "Distanță"
+    ],
+    "cells": [
+      [
+        "500 €",
+        "650 €",
+        "450 €"
+      ],
+      [
+        "55 m²",
+        "70 m²",
+        "48 m²"
+      ],
+      [
+        "10 min",
+        "25 min",
+        "5 min"
+      ]
+    ]
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "id": "sequence-login",
+  "title": "Login sequence",
+  "tags": [
+    "login",
+    "request",
+    "response",
+    "api",
+    "token",
+    "sequence",
+    "messages"
+  ],
+  "type": "sequence",
+  "tool": "add_sequence",
+  "text": "User -> App: log in; App -> Server: POST /login; Server -> App: token; App -> User: dashboard.",
+  "why": "Actors across the top, messages in order top to bottom, replies dashed.",
+  "args": {
+    "actors": [
+      "User",
+      "App",
+      "Server"
+    ],
+    "messages": [
+      {
+        "from": "User",
+        "to": "App",
+        "text": "Log in"
+      },
+      {
+        "from": "App",
+        "to": "Server",
+        "text": "POST /login"
+      },
+      {
+        "from": "Server",
+        "to": "App",
+        "text": "Token",
+        "reply": true
+      },
+      {
+        "from": "App",
+        "to": "User",
+        "text": "Dashboard",
+        "reply": true
+      }
+    ]
+  }
+}

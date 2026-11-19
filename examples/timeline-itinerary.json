@@ -1,0 +1,63 @@
+{
+  "id": "timeline-itinerary",
+  "title": "Multi-day itinerary with alternatives",
+  "tags": [
+    "trip",
+    "itinerary",
+    "days",
+    "plan a",
+    "plan b",
+    "schedule",
+    "ziua",
+    "excursie"
+  ],
+  "type": "timeline",
+  "tool": "add_timeline",
+  "text": "Ziua 2 - Vineri 13/11. Plan A: 07:30 plecare, 10:00 telecabina, 11:45 Mürren. Plan B: Bern, centrul vechi.",
+  "why": "Days are rows, Plan A / Plan B are lanes, each activity is placed by its start and end; details go in notes.",
+  "args": {
+    "rows": [
+      {
+        "title": "Vin 13/11",
+        "lanes": [
+          {
+            "title": "Plan A",
+            "items": [
+              {
+                "start": "07:30",
+                "end": "09:30",
+                "text": "Drive to Lauterbrunnen"
+              },
+              {
+                "start": "10:00",
+                "end": "10:15",
+                "text": "Cable car"
+              },
+              {
+                "start": "10:15",
+                "end": "11:45",
+                "text": "Walk to Mürren",
+                "notes": [
+                  {
+                    "text": "Check the webcams first",
+                    "kind": "question"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Plan B",
+            "items": [
+              {
+                "start": "09:00",
+                "end": "12:00",
+                "text": "Bern old town"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "id": "arch-web-app",
+  "title": "Web app architecture with layers",
+  "tags": [
+    "architecture",
+    "api",
+    "database",
+    "frontend",
+    "backend",
+    "cache",
+    "queue",
+    "services"
+  ],
+  "type": "architecture",
+  "tool": "add_graph",
+  "text": "The React app calls the API gateway; it routes to the orders and auth services; orders writes to Postgres and publishes to Kafka.",
+  "why": "Layers are groups (titled boxes around their members), arrows are calls labelled with what flows.",
+  "args": {
+    "nodes": [
+      {
+        "key": "web",
+        "text": "React app",
+        "group": "fe"
+      },
+      {
+        "key": "gw",
+        "text": "API gateway",
+        "group": "be"
+      },
+      {
+        "key": "auth",
+        "text": "Auth service",
+        "group": "be"
+      },
+      {
+        "key": "ord",
+        "text": "Orders service",
+        "group": "be"
+      },
+      {
+        "key": "pg",
+        "text": "Postgres",
+        "group": "data"
+      },
+      {
+        "key": "kf",
+        "text": "Kafka",
+        "group": "data"
+      }
+    ],
+    "edges": [
+      {
+        "from": "web",
+        "to": "gw",
+        "label": "REST"
+      },
+      {
+        "from": "gw",
+        "to": "auth"
+      },
+      {
+        "from": "gw",
+        "to": "ord"
+      },
+      {
+        "from": "ord",
+        "to": "pg"
+      },
+      {
+        "from": "ord",
+        "to": "kf",
+        "label": "events"
+      }
+    ],
+    "groups": [
+      {
+        "key": "fe",
+        "title": "Clients"
+      },
+      {
+        "key": "be",
+        "title": "Backend"
+      },
+      {
+        "key": "data",
+        "title": "Data"
+      }
+    ]
+  }
+}

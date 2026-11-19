@@ -1,0 +1,48 @@
+{
+  "id": "columns-board",
+  "title": "Board of stages",
+  "tags": [
+    "board",
+    "kanban",
+    "backlog",
+    "done",
+    "stages",
+    "status",
+    "retro"
+  ],
+  "type": "columns",
+  "tool": "add_columns",
+  "text": "Backlog: login page, password reset. In progress: billing. Done: onboarding.",
+  "why": "One column per stage left to right, items stacked inside, no arrows needed.",
+  "args": {
+    "columns": [
+      {
+        "title": "Backlog",
+        "items": [
+          {
+            "text": "Login page"
+          },
+          {
+            "text": "Password reset"
+          }
+        ]
+      },
+      {
+        "title": "In progress",
+        "items": [
+          {
+            "text": "Billing"
+          }
+        ]
+      },
+      {
+        "title": "Done",
+        "items": [
+          {
+            "text": "Onboarding"
+          }
+        ]
+      }
+    ]
+  }
+}
